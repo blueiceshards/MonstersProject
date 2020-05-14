@@ -1,16 +1,54 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+// what is Component, in class App extends Component? Component is part of the 'react' library, and is imported as {Component} using destructuring. If we didnt include {Component} like that, and just import React, we can still use Component in our code by just simply saying class App extends React.Component. Component is a property of React that we can use. 
+
+// when we say class App extends Component or class App extends React.Component, we are saying that we want whatever functionality that this React Component that was already built into the library by sombody, I want that functionality and I am going to add on to it. for example the render() method comes built in with React.Component. This React.Component gives us some battery operated options to use in our component so that we don't have to constantly repeat ourselves. super() helps us with this by calling React.Component's constructor(). we use something that react says is a Component and we just tag on some specific functionality to it. we will learn about life cycle methods and how these components already have some important methods already on them. for instance, componentDidCatch, componentDidMount that are methods of the React.ComponentLifecycle. 
+
+// Lifecycle methods are methods that called automatically by React at different stages of when this componenet gets rendered. componentDidMount lifecycle method: when this component mounts (i.e. when React puts our component on the page and renders it onto the DOM for the first time) When it does, componentDidMount method calls whatever block of code we we write inside. we have access to lifecycle methods because of our class component. 
+
+// The birth of single page applications. Initially, all we had to do with a normal webpage was to visit a link and we get a HTML, JS, and CSS file. when we click on another link, we go to another page which gives us a whole new HTML, JS, and CSS file. however, with single page applications, we now have this idea of communicating with the backend initially, where we get a tiny HTML page (with our ID of 'root' where we filled in our React component) and then we have this massive JS file with our react library, components and all our logic. now, isntead of having to communicate back and forth with the server, if I click on something and visit a different part of the page, don't have to go back to the server to receive new files; I can just have JS or react say , rerender the DOM with something else. so now, with a Single Page Applicaiton, isntead of requesting for a page, it's turned more into requesting for data. and this is when we have the ability to communicate with outside servers, servers we don't control. for e.g. in our big project, we  can talk to the google firebase database, and some different API endpoints so that we can communicate with different APIs back and forth and using JS to just receive the data. for e.g. JSON placeholder website -> we simply get some data in JSON format, which can be converted into a JS object that we can use. all this does is to provide us with API, a way for us to access info from this server. now, single page applications, instead of just rendering HTML, can use this data to display different monsters adn different user information and as we will see, let us do intersting things like sign in and sign out, add items to shopping cart. 
+
+// as you build larger and larger applications, you will start talking to APIs and start to get different data for your applications. these endpoints or servers that we speak to can be 3rd party servers like google servers or can be your own server, where you perhaps have your own database. the way we build applications now is very dynamic. most of the time, we don't hardcode all the info into HTML, JS, and CSS files. instead, when a user opens something, we are always communciating with outside servers. we are going to start structuring our app this way. 
+
+// this.state.monsters array-> in the real world, we probably won't hardcode our information, but rather, get our information from some sort of database. 
 
 class App extends Component { 
   constructor() {
     super();
 
     this.state = {
-      string: 'Hello thereeee!'
+      //string: 'Hello thereeee!'
+      monsters: [] // can be an empty array because now we are just going to wait for our component to mount, then we are going to fetch all of our users, then we are going to update our state's monsters property with the new array of users from fetch method. 
     }
   }
-  render() { 
+
+// JS's native fetch will make an API request to the URL and returns us a promise. that promise gives us a response of the actual body. 
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users') // returns a promise
+    .then(response => response.json()) // returns a new promise - taking the response and converting it into a json format that our javascript can understand
+    //.then(users => console.log(users)); // console logs an array
+    .then(users => this.setState({monsters: users})); // take the users that we get back from it and set our monsters to that array. 
+  }
+  
+// we will call this.state.monsters.map because map returns us the return of whatever function we pass to it, iterated over every element in this array. map takes a function where the first argument is going to be actual element that this function is goign to get called on. so it's goign to call the function we passed on it, on Frankenstein, and then on Dracula, and then on Zombie. it's goign to call the function on each object in the array of monsters. what the function returns is what gets returned out of this map. usually it's a new array when you call map, but react is smart enough to know that if we end up rendering a bunch of HTML blocks in an array, then it's just goign to display those elements.
+
+// you must call curly braces inside of <h1></h1> tags because it's a new return block of HTML (that is JS language I guess)
+
+// <h1 key = {}> because if not: Warning: Each child in a list should have a unique "key" prop. The reason why you want a unique key is because React needs to know what to update if one of these elementsin our monsters array has a value that changes. For e.g. the user does something and it changes the name of our first monster from Frankenstein to Banshee in the code somewhere with setState. React is smart enough to know that it only needs to update the first h1 with the new property. it does not need to re-render all of the other elements like Dracula and zombie. the key will help React know which element is the one that's been updated, which HTML it's attached to, so it doesn't hve to re-render everything. if this list was way bigger, it would be performance-heavy to rerender everything. this is what makes React great because it's smart and knows it only needs to rerender the HTML of that one element that changes in a list of a 1000 elements. 
+
+  render() {
+    return (
+      <div className='App'>
+        {
+          this.state.monsters.map(monster => <h1 key = {monster.id}>{ monster.name }</h1>)
+        }
+      </div>
+    )
+  }
+  
+  /* render() { 
     return ( 
       <div className = 'App'> 
         <header className = 'App-header'>
@@ -28,7 +66,7 @@ class App extends Component {
         </header>
       </div>
     )
-  }
+  } */
 }
 
 // we know that we can write functions that return HTML, but we can also write classes that return HTML. why we want to use a class -> react has given us the ability to write classes that have a lot more functionality vs a function that returns some HTML. to write a class, we have to first import {Component} from React. i.e. import React, {Component} from 'react'. 
