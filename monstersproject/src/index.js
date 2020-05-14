@@ -34,6 +34,8 @@ ReactDOM.render(
 
 // if we go to App.js, we are importing React, and if we go to index.js, we are importing React AND ReactDOM. React library allows us to write HTML-like syntax in a js file and it understands it because of this react library. the ReactDOM is the robot that interacts with the DOM, it can be replaced with different robots (the one that interacts with a mobile device). React package allows us to write JSX and build components and build that virtual DOM, and ReactDOM is the robot that actually interacts with the DOM. ReactDOM.render allows us to grab an element from HTML and insert App into it. 
 
+// Don't eject. -> a lot of extra files and code. no matter how many extra time you spend with react, you are never going to compete with the developers that are working full time to make create-react-app the best tool ever, as easy and efficient for you as possible. do not eject out of create-react-app unless you absoltuely have to. with create-react-app, you automatically get the best system and project to build out of the box. anytime there are updates, the industry changes, and there are new ways of doign things, create-react-app is automatically going to have new versions that have those changes implemented by professionals. you don't need to know what's goign on underneath tthe hood, so don't eject, you lose the benefits as create-react-app gets more complex. 
+
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
