@@ -4,6 +4,12 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+// Below, we are rendering this App component, which isn't HTML but our own custom Component. we are importing this file from App.js (see above). (and in App.js, we are returning under the render, some HTML). The way react works is that we can combine these HTML-like elements, such as Div or h1, but also create our own custom ones like SearchBox or CardList. These componenents that we make up starts with capital letters while components that comes prebuilt in react are like HTML, div or h1, in lowercase. as you remember, with React Component architecture, all we are doing is just creating and combining these little blocks together. 
+
+// React syntax: either using class syntax with a capital letter, e.g. (1) class App extends Component, or, (2) export const SearchBox = props => (<input .../>). The second uses just an arrow function, and is the same as function App() { return <h1>Hi</h1> } There are 2 ways of creating components: class component, and functional component. that's something we will get into alot in react because it's an important concept in react and has some impliations. We need to realize that there are 2 ways of buildign componenets. either just as functions, e.g. export const Searchbox = props => (output) or classes. Both always return some sort of JSX for us. some sort of react elements. 
+
+// good folder structure is very important - need to be organized. You can use .jsx or .js for react stuff. but doesn't matter because either way, npm build will export everything to .js. Naming your stuff is important too to be clear what's going on. create-react-app build will mash all your css files togehter into a massive css file. 
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

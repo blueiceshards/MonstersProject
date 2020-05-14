@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {CardList} from './components/card-list/card-list.component.jsx'
 import './App.css';
 
 // what is Component, in class App extends Component? Component is part of the 'react' library, and is imported as {Component} using destructuring. If we didnt include {Component} like that, and just import React, we can still use Component in our code by just simply saying class App extends React.Component. Component is a property of React that we can use. 
@@ -19,9 +20,12 @@ class App extends Component {
 
     this.state = {
       //string: 'Hello thereeee!'
-      monsters: [] // can be an empty array because now we are just going to wait for our component to mount, then we are going to fetch all of our users, then we are going to update our state's monsters property with the new array of users from fetch method. 
+      monsters: [], // can be an empty array because now we are just going to wait for our component to mount, then we are going to fetch all of our users, then we are going to update our state's monsters property with the new array of users from fetch method. 
+      searchField: ''
     }
   }
+
+  // state vs prop: once we pass a state down to a component as an attribute, e.g. <CardList monsters = {this.state.monsters} /> What you notice is that once we pass our state down to our component, this component receives it as a prop. this is whatt we usually see happening through our apps. we have state, which often is something that changes because of user interaction. in this case, monsters changes because of user interactions, from an empty array, to a array of users after ComponentDidMount() after we update the page. this.state(.monsters) trickles down our component tree as props to whoever needs it. one way unidirectional data flow. whenever something changes in the parent state, it will trickle down, pass it down as attribute, that state turns into props for all these little components down the line. here, CardList component gets passed down this.state.monsters, and the CardList componenet uses it as props because <CardList monsters = {this.state.monsters}/> State usually lives in one location and it trickles down as props. 
 
 // JS's native fetch will make an API request to the URL and returns us a promise. that promise gives us a response of the actual body. 
 
@@ -29,7 +33,7 @@ class App extends Component {
     fetch('https://jsonplaceholder.typicode.com/users') // returns a promise
     .then(response => response.json()) // returns a new promise - taking the response and converting it into a json format that our javascript can understand
     //.then(users => console.log(users)); // console logs an array
-    .then(users => this.setState({monsters: users})); // take the users that we get back from it and set our monsters to that array. 
+    .then(users => this.setState({monsters: users})); // take the users that we get back from it and set our monsters to that users array. 
   }
   
 // we will call this.state.monsters.map because map returns us the return of whatever function we pass to it, iterated over every element in this array. map takes a function where the first argument is going to be actual element that this function is goign to get called on. so it's goign to call the function we passed on it, on Frankenstein, and then on Dracula, and then on Zombie. it's goign to call the function on each object in the array of monsters. what the function returns is what gets returned out of this map. usually it's a new array when you call map, but react is smart enough to know that if we end up rendering a bunch of HTML blocks in an array, then it's just goign to display those elements.
@@ -38,12 +42,20 @@ class App extends Component {
 
 // <h1 key = {}> because if not: Warning: Each child in a list should have a unique "key" prop. The reason why you want a unique key is because React needs to know what to update if one of these elementsin our monsters array has a value that changes. For e.g. the user does something and it changes the name of our first monster from Frankenstein to Banshee in the code somewhere with setState. React is smart enough to know that it only needs to update the first h1 with the new property. it does not need to re-render all of the other elements like Dracula and zombie. the key will help React know which element is the one that's been updated, which HTML it's attached to, so it doesn't hve to re-render everything. if this list was way bigger, it would be performance-heavy to rerender everything. this is what makes React great because it's smart and knows it only needs to rerender the HTML of that one element that changes in a list of a 1000 elements. 
 
+// INPUTS: type is a built in property of input, for e.g. type='password' will censor passwords. what search gives us is the placeholder property which puts a string there when you haven't typed anything into the searchfield. inputs also have a built in method called onChange. onChange fires with this synthetic event hwich is an eventt inour browser whenever our input is changed. onChange = {e => console.log(e)}, where e is a synthetic event whenever the input is changed. e is a huge object that contains many attributes. we are only interested in the get target. and value is a property of a get target. e.target gives the HTML element that fires the event. value is a property on the input that literally gives the string value. 
+
   render() {
     return (
       <div className='App'>
-        {
-          this.state.monsters.map(monster => <h1 key = {monster.id}>{ monster.name }</h1>)
-        }
+      <input 
+      type='search'
+      placeholder='Search monsters' 
+      onChange={e => 
+        {this.setState({searchField: e.target.value}, () => console.log(this.state));
+      // console log lags a little because of asynchronous things, unless you pass consolelog as a second argument to this.setState function.
+      }} // must do curly brackets so it's JS, and another curly brackets after the arrow as well...
+      /> 
+      <CardList monsters = {this.state.monsters} />
       </div>
     )
   }
